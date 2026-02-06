@@ -33,11 +33,11 @@ npm run dev
 
 ### Mobile Deployment (Capacitor)
 
-| Command                  | Description                                    |
-| ------------------------ | ---------------------------------------------- |
-| `npm run cap:sync`       | Build web assets and sync to native platforms |
-| `npm run cap:android`    | Sync and open Android Studio                   |
-| `npm run cap:run:android`| Sync and run on connected Android device       |
+| Command                   | Description                                   |
+| ------------------------- | --------------------------------------------- |
+| `npm run cap:sync`        | Build web assets and sync to native platforms |
+| `npm run cap:android`     | Sync and open Android Studio                  |
+| `npm run cap:run:android` | Sync and run on connected Android device      |
 
 ## Features
 

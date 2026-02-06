@@ -327,6 +327,8 @@ function calculatorReducer(
         displayValue: current.startsWith('-')
           ? current.slice(1) // Remove the minus
           : `-${current}`, // Add a minus
+        // Clear waiting flag - user is actively entering the value
+        waitingForSecondOperand: false,
       };
     }
 
@@ -341,13 +343,23 @@ function calculatorReducer(
       return {
         ...state,
         displayValue: resultStr,
-        // If waiting, update firstOperand too
-        ...(state.waitingForSecondOperand && { firstOperand: result }),
+        // Clear waiting flag - percentage counts as entering a value
+        waitingForSecondOperand: false,
       };
     }
 
     // ─── BACKSPACE (⌫) ────────────────────────────────────────────────
     case 'BACKSPACE': {
+      // If waiting for second operand, backspace starts entering it
+      // For example: "5 +" [user presses backspace] should allow entering second operand
+      if (state.waitingForSecondOperand) {
+        return {
+          ...state,
+          displayValue: '0',
+          waitingForSecondOperand: false,
+        };
+      }
+
       if (state.error) {
         return {
           ...initialState,

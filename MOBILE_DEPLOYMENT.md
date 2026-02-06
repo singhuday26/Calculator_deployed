@@ -31,12 +31,14 @@ Complete walkthrough for deploying this calculator to the Google Play Store usin
 Download from: https://developer.android.com/studio
 
 **Why?** Capacitor generates an Android Gradle project, but you need Android Studio to:
+
 - Compile the Java/Kotlin code
 - Sign the APK/AAB
 - Manage Android SDK versions
 - Debug on emulators or physical devices
 
 **Installation Steps:**
+
 1. Download Android Studio (3-4 GB)
 2. Run installer → Select "Standard" installation
 3. Wait for SDK components to download (10-15 minutes)
@@ -51,15 +53,18 @@ Download from: https://developer.android.com/studio
 Android Gradle Plugin requires JDK 17+.
 
 **Check if you have it:**
+
 ```bash
 java -version
 ```
 
 **If you see version < 17 or "command not found":**
+
 - **Option A**: Android Studio bundles a JDK (usually in `C:\Program Files\Android\Android Studio\jbr\`)
 - **Option B**: Download from [Adoptium.net](https://adoptium.net/) → Install Temurin JDK 17
 
 **Set JAVA_HOME (Windows):**
+
 ```powershell
 # Find your JDK path (usually Android Studio's bundled JDK)
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
@@ -80,11 +85,13 @@ npm run cap:android
 ```
 
 **First time opening?** Android Studio will:
+
 - Download Gradle wrapper (~100 MB)
 - Sync Gradle project (~2-3 minutes)
 - Index files
 
 **Running on Device/Emulator:**
+
 1. Connect Android device via USB (or start an emulator in Android Studio)
 2. Enable USB Debugging on device (Settings → About Phone → Tap "Build Number" 7 times → Developer Options → USB Debugging)
 3. In Android Studio, click the green ▶️ **Run** button
@@ -95,7 +102,9 @@ npm run cap:android
 Instead of rebuilding every time, you can connect the Android app to your dev server:
 
 **Steps:**
+
 1. Find your computer's local IP:
+
    ```bash
    ipconfig   # Windows
    ifconfig   # Mac/Linux
@@ -103,6 +112,7 @@ Instead of rebuilding every time, you can connect the Android app to your dev se
    ```
 
 2. Edit `capacitor.config.ts`:
+
    ```typescript
    server: {
      url: 'http://192.168.1.100:5173',  // Your IP + Vite port
@@ -133,6 +143,7 @@ The app uses **default Capacitor icons** (generic robot).
 #### Option 1: Manual (All Sizes)
 
 Create PNG icons in these sizes and place in `android/app/src/main/res/mipmap-*/`:
+
 - `mipmap-mdpi/`: 48x48
 - `mipmap-hdpi/`: 72x72
 - `mipmap-xhdpi/`: 96x96
@@ -156,12 +167,14 @@ This auto-generates all required sizes for Android (and iOS if added).
 ### App Name & Colors
 
 **App Name** (shown under icon):
+
 - Edit `android/app/src/main/res/values/strings.xml`:
   ```xml
   <string name="app_name">Calculator</string>
   ```
 
 **Splash Screen Color**:
+
 - Edit `android/app/src/main/res/values/styles.xml`
 
 ---
@@ -175,6 +188,7 @@ Google Play Store requires **Android App Bundle (.aab)** format (not APK) for ne
 Android apps must be digitally signed. You need a **keystore** file.
 
 **In Android Studio:**
+
 1. **Build** → **Generate Signed Bundle/APK**
 2. Select **Android App Bundle**
 3. Click **Create new...** (under "Key store path")
@@ -193,6 +207,7 @@ If you lose this key, you CANNOT update your app on Play Store.
 ### Step 2: Build the AAB
 
 **In Android Studio:**
+
 1. **Build** → **Generate Signed Bundle/APK**
 2. Select **Android App Bundle** → **Next**
 3. Select your keystore (created in Step 1)
@@ -202,6 +217,7 @@ If you lose this key, you CANNOT update your app on Play Store.
 7. Click **Finish**
 
 **Output location:**
+
 ```
 android/app/release/app-release.aab
 ```
@@ -210,10 +226,10 @@ This `.aab` file is what you upload to Play Console!
 
 ### Build Variants Explained
 
-| Variant   | Purpose                          | Optimizations  | Debuggable |
-|-----------|----------------------------------|----------------|------------|
-| `debug`   | Development, testing             | None           | Yes        |
-| `release` | Production, Play Store           | Code shrinking | No         |
+| Variant   | Purpose                | Optimizations  | Debuggable |
+| --------- | ---------------------- | -------------- | ---------- |
+| `debug`   | Development, testing   | None           | Yes        |
+| `release` | Production, Play Store | Code shrinking | No         |
 
 ---
 
@@ -241,10 +257,12 @@ This `.aab` file is what you upload to Play Console!
 Fill out all required sections in the dashboard:
 
 **App Details:**
+
 - Short description (80 chars): "Fast, elegant calculator with dark mode"
 - Full description (4000 chars): Explain features, keyboard support, themes, etc.
 
 **Graphics:**
+
 - App icon (512x512 PNG)
 - Feature graphic (1024x500 PNG)
 - Screenshots:
@@ -253,10 +271,12 @@ Fill out all required sections in the dashboard:
   - **10-inch tablet** (optional)
 
 **Categorization:**
+
 - App category: Tools → Productivity
 - Tags: calculator, math, utility
 
 **Contact Details:**
+
 - Email, privacy policy (if app collects data)
 
 ### Step 4: Set Up Release
@@ -290,6 +310,7 @@ Complete the questionnaire (for a calculator, likely "Everyone" rating).
 2. Click **Submit for review**
 
 **Timeline:**
+
 - First review: 1-7 days
 - Updates: Usually < 24 hours
 
@@ -300,11 +321,13 @@ Complete the questionnaire (for a calculator, likely "Everyone" rating).
 ### Issue: `JAVA_HOME not set`
 
 **Error:**
+
 ```
 ERROR: JAVA_HOME is not set and no 'java' command could be found
 ```
 
 **Fix:**
+
 ```powershell
 # Find JDK (Android Studio bundles one):
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
@@ -314,6 +337,7 @@ java -version
 ```
 
 Make it permanent:
+
 1. Windows Search → "Environment Variables"
 2. System Properties → Environment Variables
 3. New → Variable: `JAVA_HOME`, Value: `C:\Program Files\Android\Android Studio\jbr`
@@ -323,11 +347,13 @@ Make it permanent:
 ### Issue: Gradle Sync Failed
 
 **Error:**
+
 ```
 A problem occurred configuring project ':app'.
 ```
 
 **Fixes:**
+
 1. **Check Android SDK**: Android Studio → SDK Manager → SDK Platforms → Install latest
 2. **Clean build**:
    ```bash
@@ -341,11 +367,13 @@ A problem occurred configuring project ':app'.
 ### Issue: App Crashes on Launch
 
 **Check Logcat in Android Studio:**
+
 1. Run app on device
 2. View → Tool Windows → Logcat
 3. Filter for "chromium" or "CapacitorWebView"
 
 **Common causes:**
+
 - Missing `dist/` folder: Run `npm run build` first
 - Service worker issues: Capacitor doesn't load service workers well; consider disabling for mobile
 
@@ -356,11 +384,13 @@ A problem occurred configuring project ':app'.
 **🚨 BAD NEWS:** There's no recovery. You cannot update your app.
 
 **Workaround:**
+
 - Create new keystore
 - Publish as a **NEW app** (different package name)
 - Cannot migrate users from old app
 
 **Prevention:**
+
 - Store keystore and passwords in password manager (1Password, Bitwarden)
 - Commit encrypted keystore to private repo
 - Save recovery info in 3 places
@@ -374,12 +404,14 @@ A problem occurred configuring project ':app'.
 When you make changes and want to publish an update:
 
 1. **Increment version** in `android/app/build.gradle`:
+
    ```gradle
    versionCode 2        // Increment by 1 (used by Play Store for tracking)
    versionName "1.0.1"  // User-facing version (semantic versioning)
    ```
 
 2. Build → sync → generate AAB:
+
    ```bash
    npm run cap:sync
    npm run cap:android
@@ -390,12 +422,13 @@ When you make changes and want to publish an update:
 
 ### Version Numbering
 
-| Field          | Format       | Example   | Rule                                |
-|----------------|--------------|-----------|-------------------------------------|
-| `versionCode`  | Integer      | 1, 2, 3   | Increment on EVERY release          |
-| `versionName`  | Semver       | 1.0.0     | User-facing version                 |
+| Field         | Format  | Example | Rule                       |
+| ------------- | ------- | ------- | -------------------------- |
+| `versionCode` | Integer | 1, 2, 3 | Increment on EVERY release |
+| `versionName` | Semver  | 1.0.0   | User-facing version        |
 
 **Semantic Versioning (versionName):**
+
 - `1.0.0` → `1.0.1`: Bug fixes
 - `1.0.1` → `1.1.0`: New features
 - `1.1.0` → `2.0.0`: Breaking changes
@@ -448,8 +481,10 @@ import { AppUpdate } from '@capawesome/capacitor-app-update';
 ---
 
 > 💡 **Pro Tip:** Test your AAB before uploading to Play Store using Google's **bundletool**:
+>
 > ```bash
 > bundletool build-apks --bundle=app-release.aab --output=app.apks
 > bundletool install-apks --apks=app.apks
 > ```
+>
 > This simulates Play Store's APK generation.
