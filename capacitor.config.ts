@@ -39,9 +39,10 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   /**
    * Unique app identifier for app stores.
-   * CHANGE THIS to your own domain before publishing!
+   * Format: Reverse domain notation (com.username.appname)
+   * ⚠️ Cannot be changed after publishing to Play Store!
    */
-  appId: 'com.yourname.calculator',
+  appId: 'com.singhuday26.calculator',
 
   /** Display name shown under the app icon */
   appName: 'Calculator',

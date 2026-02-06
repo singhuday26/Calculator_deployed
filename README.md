@@ -18,6 +18,8 @@ npm run dev
 
 ## Available Commands
 
+### Development & Testing
+
 | Command              | Description                               |
 | -------------------- | ----------------------------------------- |
 | `npm run dev`        | Start development server with HMR         |
@@ -28,6 +30,14 @@ npm run dev
 | `npm run lint`       | Check code quality with ESLint            |
 | `npm run format`     | Format code with Prettier                 |
 | `npm run type-check` | Check TypeScript types without building   |
+
+### Mobile Deployment (Capacitor)
+
+| Command                  | Description                                    |
+| ------------------------ | ---------------------------------------------- |
+| `npm run cap:sync`       | Build web assets and sync to native platforms |
+| `npm run cap:android`    | Sync and open Android Studio                   |
+| `npm run cap:run:android`| Sync and run on connected Android device       |
 
 ## Features
 
@@ -64,21 +74,65 @@ npm run build
 
 ## Deploying to Play Store
 
-### 1. Install Capacitor (first time only)
+### Prerequisites
+
+- ✅ **Capacitor installed** (already configured in this project)
+- ✅ **Android platform added** (`android/` folder exists)
+- ⚠️ **Android Studio** required ([Download here](https://developer.android.com/studio))
+- ⚠️ **JDK 17+** required (bundled with Android Studio or install separately)
+
+### Quick Deploy (3 steps)
 
 ```bash
-npm install -D @capacitor/cli @capacitor/core
-npm install @capacitor/android
+# 1. Build web assets and sync to Android
+npm run cap:sync
+
+# 2. Open in Android Studio
+npm run cap:android
+
+# 3. In Android Studio:
+#    Build → Generate Signed Bundle/APK → Android App Bundle (.aab)
+#    Then upload to Play Console
 ```
 
-### 2. Build and Deploy
+### Testing on Device (Before Publishing)
 
 ```bash
-npm run build                      # Build web assets
-npx cap init Calculator com.yourname.calculator  # Initialize Capacitor
-npx cap add android                # Add Android platform
-npx cap sync                       # Copy web assets to Android
-npx cap open android               # Open in Android Studio → Build → Generate Signed APK
+# Connect Android device via USB (enable USB debugging)
+# Run directly on device:
+npm run cap:run:android
+
+# Or manually in Android Studio:
+# Click ▶️ Run button after opening with `npm run cap:android`
+```
+
+### Development Workflow
+
+When making code changes:
+
+```bash
+# Option A: Rebuild and sync
+npm run cap:sync
+
+# Option B: Live reload (faster during development)
+# 1. Find your local IP: ipconfig (Windows) or ifconfig (Mac/Linux)
+# 2. Uncomment server config in capacitor.config.ts
+# 3. Set url to http://YOUR_IP:5173
+# 4. Run: npm run dev
+# 5. App will hot-reload on code changes!
+```
+
+### App Identity
+
+- **App ID**: `com.singhuday26.calculator` (cannot change after Play Store publish)
+- **App Name**: `Calculator`
+- **Current icons**: Default Capacitor icons (located in `android/app/src/main/res/mipmap-*`)
+
+To customize icons, use [Capacitor Assets](https://github.com/ionic-team/capacitor-assets):
+
+```bash
+# Generate all icon sizes from a single 1024x1024 PNG
+npx @capacitor/assets generate --iconBackgroundColor '#000000'
 ```
 
 See [BLUEPRINT.md § Capacitor](BLUEPRINT.md#9-capacitor--from-web-to-play-store) for detailed instructions.
