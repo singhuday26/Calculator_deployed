@@ -274,13 +274,24 @@ function calculatorReducer(
           timestamp: Date.now(),
         };
 
+        /**
+         * DESIGN DECISION: Reset firstOperand after calculation
+         * 
+         * This matches real calculator behavior:
+         * - After "5 + 3 = 8", typing "2" starts a NEW calculation (displays "2", not "82")
+         * - After "5 + 3 = 8", pressing "+" continues with result ("8 + ...")
+         * 
+         * By resetting firstOperand to null:
+         * - Typing digits → starts fresh (23 + 23 = 46, then "2" → firstOperand: null)
+         * - Pressing operator → uses result (23 + 23 = 46, then "+" → firstOperand: 46)
+         */
         return {
           ...state,
           displayValue: resultStr,
           expression: '',
-          firstOperand: result,
+          firstOperand: null, // Reset to allow fresh calculations
           operator: null,
-          waitingForSecondOperand: true,
+          waitingForSecondOperand: true, // Keep true to allow starting new number
           history: [historyEntry, ...state.history].slice(0, 50), // Keep last 50
         };
       } catch (error) {
