@@ -1,0 +1,110 @@
+/**
+ * ==========================================================================
+ * THEMES.CSS — Theme Definitions via CSS Custom Properties
+ * ==========================================================================
+ *
+ * HOW CSS THEMING WORKS:
+ * ─────────────────────
+ * CSS Custom Properties (variables) are defined on root selectors.
+ * When we change the `data-theme` attribute on <html>, the browser
+ * automatically switches which set of variables is active.
+ *
+ * Component CSS uses `var(--variable-name)` instead of hardcoded colors.
+ * When the theme changes, EVERY component updates automatically.
+ * No JavaScript re-rendering needed — it's pure CSS!
+ *
+ * THE MECHANISM:
+ *   1. useTheme hook sets: <html data-theme="dark">
+ *   2. CSS matches: :root[data-theme="dark"] { --bg: #000; }
+ *   3. Components use: background: var(--bg);
+ *   4. Result: All components show dark background
+ *
+ *   When theme toggles to light:
+ *   1. useTheme sets: <html data-theme="light">
+ *   2. CSS matches: :root[data-theme="light"] { --bg: #f2f2f7; }
+ *   3. Components STILL use: background: var(--bg);
+ *   4. Result: All components show light background — zero JS needed!
+ *
+ * WHY CSS VARIABLES OVER JS THEMING:
+ * - Zero JavaScript execution for theme switching
+ * - No React re-renders (CSS handles it)
+ * - Works with CSS transitions for smooth theme changes
+ * - Standard CSS — no library dependencies
+ * ==========================================================================
+ */
+
+/* ── DARK THEME (Default) ─────────────────────────────────────────────────── */
+:root[data-theme='dark'] {
+  /* Background colors */
+  --color-bg-app: #1a1a2e; /* Page background */
+  --color-bg-calculator: #16213e; /* Calculator body */
+  --color-bg-display: #0f0f23; /* Display area */
+
+  /* Button colors */
+  --color-btn-number: #2a2d3e; /* Number buttons (0-9, .) */
+  --color-btn-number-hover: #363a4f; /* Number buttons on hover */
+  --color-btn-number-active: #1e2030; /* Number buttons when pressed */
+
+  --color-btn-operator: #ff9500; /* Operator buttons (+, -, ×, ÷) */
+  --color-btn-operator-hover: #ffaa33; /* Operator on hover */
+  --color-btn-operator-active: #cc7700; /* Operator when pressed */
+
+  --color-btn-action: #4a4d6a; /* Action buttons (AC, ±, %) */
+  --color-btn-action-hover: #5a5d7a; /* Action on hover */
+  --color-btn-action-active: #3a3d5a; /* Action when pressed */
+
+  --color-btn-equals: #5a67d8; /* Equals button */
+  --color-btn-equals-hover: #6b78e8; /* Equals on hover */
+  --color-btn-equals-active: #4a57c8; /* Equals when pressed */
+
+  /* Text colors */
+  --color-text-primary: #ffffff; /* Main display text */
+  --color-text-secondary: #a0a0b8; /* Expression text */
+  --color-text-button: #ffffff; /* Button text (numbers) */
+  --color-text-operator: #ffffff; /* Operator button text */
+  --color-text-action: #ffffff; /* Action button text */
+  --color-text-error: #ff6b6b; /* Error message text */
+
+  /* Effects */
+  --shadow-calculator: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --border-calculator: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ── LIGHT THEME ──────────────────────────────────────────────────────────── */
+:root[data-theme='light'] {
+  /* Background colors */
+  --color-bg-app: #f2f2f7;
+  --color-bg-calculator: #ffffff;
+  --color-bg-display: #f8f8fc;
+
+  /* Button colors */
+  --color-btn-number: #e8e8ed;
+  --color-btn-number-hover: #d8d8dd;
+  --color-btn-number-active: #c8c8cd;
+
+  --color-btn-operator: #ff9500;
+  --color-btn-operator-hover: #ffaa33;
+  --color-btn-operator-active: #cc7700;
+
+  --color-btn-action: #d4d4d9;
+  --color-btn-action-hover: #c4c4c9;
+  --color-btn-action-active: #b4b4b9;
+
+  --color-btn-equals: #5a67d8;
+  --color-btn-equals-hover: #6b78e8;
+  --color-btn-equals-active: #4a57c8;
+
+  /* Text colors */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #6e6e80;
+  --color-text-button: #1a1a1a;
+  --color-text-operator: #ffffff;
+  --color-text-action: #1a1a1a;
+  --color-text-error: #dc3545;
+
+  /* Effects */
+  --shadow-calculator: 0 10px 40px rgba(0, 0, 0, 0.1);
+  --shadow-button: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --border-calculator: 1px solid rgba(0, 0, 0, 0.08);
+}

@@ -1,0 +1,28 @@
+{
+  /*
+   * ==========================================================================
+   * TSCONFIG.JSON — TypeScript Project References Configuration
+   * ==========================================================================
+   *
+   * PURPOSE:
+   * This is the ROOT TypeScript config. It doesn't compile anything itself —
+   * instead, it references other tsconfig files (app & node) that handle
+   * different parts of the codebase.
+   *
+   * WHY PROJECT REFERENCES:
+   * Your project has TWO TypeScript environments:
+   * 1. Browser code (src/) — uses DOM APIs, JSX, ES modules
+   * 2. Node.js tooling (vite.config.ts) — uses Node APIs, CommonJS
+   *
+   * Each needs different compiler settings. Project references let
+   * TypeScript handle both correctly.
+   *
+   * NOTE: Linter warnings about "strict" and "forceConsistentCasingInFileNames"
+   * are FALSE POSITIVES. Those settings are correctly configured in
+   * tsconfig.app.json (line 37-38). This root config intentionally has no
+   * compilerOptions because it uses project references.
+   * ==========================================================================
+   */
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+}

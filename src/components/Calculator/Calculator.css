@@ -1,0 +1,55 @@
+/**
+ * ==========================================================================
+ * CALCULATOR.CSS — Calculator Container Styles
+ * ==========================================================================
+ *
+ * Styles for the main calculator container component.
+ * This defines the overall shape, shadow, and feel of the calculator.
+ *
+ * ALL COLORS USE CSS VARIABLES from themes.css.
+ * This means we never hardcode colors here — every color adapts
+ * automatically when the theme changes.
+ * ==========================================================================
+ */
+
+.calc-container {
+  /* Size and shape */
+  width: 100%;
+  max-width: 360px;
+  border-radius: 24px;
+  overflow: hidden;
+
+  /* Background and border */
+  background-color: var(--color-bg-calculator);
+  border: var(--border-calculator);
+
+  /* Shadow for depth and "floating" effect */
+  box-shadow: var(--shadow-calculator);
+
+  /* Smooth transitions when theme changes */
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  /* Prevent text selection on buttons (see globals.css for explanation) */
+  -webkit-user-select: none;
+  user-select: none;
+
+  /*
+   * Safe area padding for devices with notches (iPhone X+).
+   * env(safe-area-inset-bottom) returns the size of the bottom "cutout."
+   * On devices without a notch, it returns 0.
+   */
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/*
+ * RESPONSIVE: On very small screens, make the calculator full-width
+ * with no border radius (edge-to-edge, like a native app).
+ */
+@media (max-width: 380px) {
+  .calc-container {
+    border-radius: 0;
+    max-width: 100%;
+  }
+}

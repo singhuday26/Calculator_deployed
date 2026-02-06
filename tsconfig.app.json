@@ -1,0 +1,45 @@
+{
+  /*
+   * ==========================================================================
+   * TSCONFIG.APP.JSON — TypeScript Config for Application Source Code
+   * ==========================================================================
+   *
+   * This config governs everything in src/ — your React components,
+   * hooks, utilities, and types.
+   *
+   * KEY SETTINGS EXPLAINED:
+   * - "target": "ES2020"  → Output modern JS (supported by all current browsers)
+   * - "jsx": "react-jsx"  → Use React 17+ JSX transform (no import React needed)
+   * - "strict": true      → Enable ALL strict checks (the #1 TypeScript best practice)
+   * - "noUnusedLocals"    → Error on unused variables (keeps code clean)
+   * ==========================================================================
+   */
+  "compilerOptions": {
+    /* ── Language & Output ─────────────────────────────────── */
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* ── Module Resolution ─────────────────────────────────── */
+    // "bundler" mode works with Vite — resolves modules the same way Vite does
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* ── Type Checking (STRICT MODE = ON) ──────────────────── */
+    // These flags catch bugs at compile time instead of runtime.
+    // NEVER turn these off in a production project.
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src"]
+}

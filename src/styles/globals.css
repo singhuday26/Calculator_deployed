@@ -1,0 +1,182 @@
+/**
+ * ==========================================================================
+ * GLOBALS.CSS — Base Styles & CSS Reset
+ * ==========================================================================
+ *
+ * WHY A CSS RESET:
+ * Every browser has default styles (margins on <body>, padding on <ul>,
+ * font sizes on <h1>, etc.). These defaults vary between browsers,
+ * causing inconsistent appearance.
+ *
+ * A "reset" normalizes these defaults so we start from a clean slate.
+ * This is standard practice in ALL production websites.
+ *
+ * WHAT'S IN THIS FILE:
+ * 1. Modern CSS reset (minimal, opinionated)
+ * 2. Base typography settings
+ * 3. App-level layout (centering the calculator)
+ * 4. Utility styles
+ *
+ * LOAD ORDER MATTERS:
+ * This file is imported in main.tsx BEFORE component styles.
+ * CSS is applied in source order — later styles override earlier ones.
+ * So component styles can override globals, but not vice versa.
+ * ==========================================================================
+ */
+
+/* ── MODERN CSS RESET ─────────────────────────────────────────────────────── */
+
+/**
+ * box-sizing: border-box
+ *
+ * This is the MOST IMPORTANT CSS rule in modern development.
+ *
+ * DEFAULT BEHAVIOR (content-box):
+ *   width: 100px + padding: 20px + border: 2px = 144px total
+ *   (padding and border are ADDED to the width. Confusing!)
+ *
+ * WITH border-box:
+ *   width: 100px = 100px total (padding and border are INCLUDED)
+ *
+ * border-box makes sizing intuitive. "100px" means 100px, period.
+ * Every CSS framework and production codebase uses this.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/**
+ * Remove default margins and paddings.
+ * We'll add our own where needed.
+ */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Smooth scrolling when navigating to in-page anchors.
+ * Respects user's "reduce motion" preference (accessibility).
+ */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ── BASE TYPOGRAPHY ──────────────────────────────────────────────────────── */
+
+/**
+ * Font stack: System fonts (no external downloads needed).
+ *
+ * system-ui uses the OS's native font:
+ * - Windows: Segoe UI
+ * - macOS: San Francisco
+ * - Android: Roboto
+ * - Linux: Ubuntu/DejaVu Sans
+ *
+ * WHY SYSTEM FONTS:
+ * 1. Zero download time (fonts are already on the device)
+ * 2. Familiar to users (matches their OS)
+ * 3. Optimized for readability on each platform
+ * 4. Reduces bundle size (no font files)
+ *
+ * For a calculator, system fonts are perfect. For a brand-heavy app,
+ * you might want custom fonts via @font-face or Google Fonts.
+ */
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
+
+  /* Optimize text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  /* Prevent text size adjustment on orientation change (iOS) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── APP LAYOUT ───────────────────────────────────────────────────────────── */
+
+/**
+ * Full-viewport centering using CSS Grid.
+ *
+ * This is the modern way to center content both horizontally and vertically.
+ * `min-height: 100dvh` uses Dynamic Viewport Height — it accounts for
+ * mobile browser chrome (address bar, bottom bar) that changes size.
+ *
+ * DVH vs VH:
+ * - vh: Fixed percentage of the viewport (doesn't account for mobile chrome)
+ * - dvh: Adjusts as mobile browser chrome shows/hides
+ * - svh: Smallest possible viewport (chrome fully visible)
+ * - lvh: Largest possible viewport (chrome hidden)
+ *
+ * dvh is the best choice for mobile-friendly layouts.
+ */
+#root {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height (modern browsers) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-app);
+
+  /* Smooth background color transition when theme changes */
+  transition: background-color 0.3s ease;
+}
+
+/* ── UTILITY: DISABLE TEXT SELECTION ─────────────────────────────────────── */
+
+/**
+ * Prevent text selection on calculator buttons.
+ * On mobile, double-tapping a button would select the button text
+ * instead of pressing the button twice. This prevents that.
+ *
+ * We apply this to the calculator container, not globally,
+ * because users should still be able to select other text on the page.
+ */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* ── UTILITY: FOCUS STYLES ───────────────────────────────────────────────── */
+
+/**
+ * Custom focus styles for keyboard navigation.
+ *
+ * :focus-visible triggers ONLY on keyboard navigation, not mouse clicks.
+ * This gives keyboard users a clear visual indicator without annoying
+ * mouse users with focus outlines they don't need.
+ *
+ * This is a key accessibility feature — keyboard users NEED to see
+ * which element is focused. Without it, keyboard navigation is unusable.
+ */
+:focus-visible {
+  outline: 2px solid var(--color-btn-operator);
+  outline-offset: 2px;
+}
+
+/* Remove the default outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}

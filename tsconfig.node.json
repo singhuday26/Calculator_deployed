@@ -1,0 +1,38 @@
+{
+  /*
+   * ==========================================================================
+   * TSCONFIG.NODE.JSON — TypeScript Config for Node.js Tooling
+   * ==========================================================================
+   *
+   * This config is ONLY for files that run in Node.js:
+   * - vite.config.ts (build tool configuration)
+   * - eslint.config.js (linter configuration)
+   *
+   * NOTE: capacitor.config.ts is excluded because @capacitor/cli is only
+   * installed when you need to build for mobile (Android/iOS).
+   * Install it with: npm install -D @capacitor/cli @capacitor/core
+   *
+   * These files use Node.js APIs and are NOT part of your app bundle.
+   * ==========================================================================
+   */
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}

@@ -1,0 +1,56 @@
+/**
+ * ==========================================================================
+ * KEYPAD.CSS — Button Grid Layout
+ * ==========================================================================
+ *
+ * CSS GRID LAYOUT:
+ * ────────────────
+ * CSS Grid is the most powerful layout system for 2D layouts.
+ * It lets us define rows and columns, and place items into the grid
+ * with minimal code.
+ *
+ * Our calculator grid is 4 columns × 5 rows:
+ *   [AC] [±]  [%]  [÷]
+ *   [7]  [8]  [9]  [×]
+ *   [4]  [5]  [6]  [-]
+ *   [1]  [2]  [3]  [+]
+ *   [  0     ] [.] [=]
+ *
+ * GRID vs FLEXBOX:
+ * ────────────────
+ * Flexbox: 1-dimensional (row OR column, not both)
+ * Grid: 2-dimensional (rows AND columns simultaneously)
+ *
+ * For a calculator keypad, Grid is the perfect choice because
+ * we need both rows and columns, and the "0" button spans 2 columns.
+ *
+ * With Flexbox, we'd need wrapper divs for each row.
+ * With Grid, we define the grid once and let items flow naturally.
+ * ==========================================================================
+ */
+
+.calc-keypad {
+  /*
+   * CSS Grid with 4 equal columns.
+   *
+   * `repeat(4, 1fr)` creates 4 columns, each taking 1 fraction (1fr)
+   * of the available space. "1fr" means "1 flexible unit" — they
+   * divide the space equally.
+   *
+   * It's like saying: "Give me 4 columns, all the same width."
+   */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  /*
+   * Gap between grid cells.
+   * This is the modern replacement for margins between items.
+   * `gap` applies equal spacing between ALL cells — no need to
+   * worry about margins on first/last items.
+   */
+  gap: 1px;
+
+  /* Padding around the entire keypad */
+  padding: 1px;
+  background-color: var(--color-bg-calculator);
+}

@@ -1,0 +1,205 @@
+/**
+ * ==========================================================================
+ * BUTTON.CSS — Calculator Button Styles
+ * ==========================================================================
+ *
+ * Each button type has its own color scheme defined by CSS variables
+ * from themes.css. This means the SAME CSS works for both themes.
+ *
+ * KEY CSS CONCEPTS:
+ * 1. BEM-like naming (.calc-btn, .calc-btn--operator, .calc-btn--active)
+ * 2. Interactive states (:hover, :active, :focus-visible)
+ * 3. CSS transitions for smooth visual feedback
+ * 4. Touch-friendly sizing (minimum 48px tap target)
+ * 5. CSS Grid spanning (for the wide "0" button)
+ *
+ * TOUCH TARGET SIZE:
+ * ──────────────────
+ * Google's Material Design guidelines recommend a minimum touch target
+ * of 48×48 dp (device-independent pixels). Apple recommends 44×44 pt.
+ * Our buttons are ~80px tall, well above the minimum.
+ * Violating minimum touch sizes is a common mobile usability mistake.
+ * ==========================================================================
+ */
+
+/* ── BASE BUTTON STYLE ────────────────────────────────────────────────────── */
+
+.calc-btn {
+  /* Reset browser default button styles */
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+
+  /* Typography */
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+
+  /* Sizing — generous touch targets for mobile */
+  padding: 20px;
+  min-height: 72px;
+
+  /* Smooth visual transitions for hover/press/theme */
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease,
+    color 0.3s ease;
+
+  /* Subtle shadow for depth */
+  box-shadow: var(--shadow-button);
+
+  /*
+   * `touch-action: manipulation` tells the browser:
+   * "This element handles taps — don't wait 300ms for double-tap-to-zoom."
+   *
+   * Without this, mobile browsers add a 300ms delay to every click
+   * because they're waiting to see if the user will double-tap.
+   * This delay makes the calculator feel sluggish on mobile.
+   */
+  touch-action: manipulation;
+
+  /* Prevent text selection when rapidly clicking */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── NUMBER BUTTONS (0-9, .) ──────────────────────────────────────────────── */
+
+.calc-btn--number {
+  background-color: var(--color-btn-number);
+  color: var(--color-text-button);
+}
+
+.calc-btn--number:hover {
+  background-color: var(--color-btn-number-hover);
+}
+
+.calc-btn--number:active {
+  background-color: var(--color-btn-number-active);
+  /*
+   * Scale down slightly on press for "physical button" feedback.
+   * This mimics how real buttons depress when pressed.
+   * A subtle effect that makes the UI feel more responsive.
+   */
+  transform: scale(0.95);
+}
+
+/* ── OPERATOR BUTTONS (+, -, ×, ÷) ────────────────────────────────────────── */
+
+.calc-btn--operator {
+  background-color: var(--color-btn-operator);
+  color: var(--color-text-operator);
+  font-weight: 500;
+}
+
+.calc-btn--operator:hover {
+  background-color: var(--color-btn-operator-hover);
+}
+
+.calc-btn--operator:active {
+  background-color: var(--color-btn-operator-active);
+  transform: scale(0.95);
+}
+
+/*
+ * ACTIVE OPERATOR HIGHLIGHT
+ *
+ * When an operator is selected and we're waiting for the second operand,
+ * the active operator button gets an inverted color scheme.
+ * This gives the user visual feedback about which operation is pending.
+ *
+ * Example: User presses "5" then "+" → the "+" button stays highlighted
+ * until the user enters the second number.
+ */
+.calc-btn--operator.calc-btn--active {
+  background-color: #ffffff;
+  color: var(--color-btn-operator);
+}
+
+/* ── ACTION BUTTONS (AC, ±, %) ────────────────────────────────────────────── */
+
+.calc-btn--action {
+  background-color: var(--color-btn-action);
+  color: var(--color-text-action);
+}
+
+.calc-btn--action:hover {
+  background-color: var(--color-btn-action-hover);
+}
+
+.calc-btn--action:active {
+  background-color: var(--color-btn-action-active);
+  transform: scale(0.95);
+}
+
+/* ── EQUALS BUTTON (=) ────────────────────────────────────────────────────── */
+
+.calc-btn--equals {
+  background-color: var(--color-btn-equals);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.calc-btn--equals:hover {
+  background-color: var(--color-btn-equals-hover);
+}
+
+.calc-btn--equals:active {
+  background-color: var(--color-btn-equals-active);
+  transform: scale(0.95);
+}
+
+/* ── WIDE BUTTON (0) ──────────────────────────────────────────────────────── */
+
+/**
+ * The "0" button spans 2 columns in the grid.
+ * `grid-column: span 2` tells CSS Grid to make this item
+ * take up 2 column tracks instead of the default 1.
+ *
+ * We also left-align the text (number buttons are normally centered)
+ * to match the iOS calculator style.
+ */
+.calc-btn--wide {
+  grid-column: span 2;
+  text-align: left;
+  padding-left: 32px;
+  border-radius: 0 0 0 24px; /* Round bottom-left corner */
+}
+
+/* ── CORNER ROUNDING ──────────────────────────────────────────────────────── */
+
+/*
+ * Round the corners of buttons at the edges of the calculator.
+ * We use :nth-child selectors to target specific buttons by position.
+ *
+ * :nth-child(17) = "0" button (already handled by --wide)
+ * :nth-child(19) = "=" button (bottom-right)
+ *
+ * NOTE: If you change the button layout, update these selectors!
+ */
+.calc-btn:last-child {
+  border-radius: 0 0 24px 0; /* Round bottom-right corner */
+}
+
+/* ── RESPONSIVE ADJUSTMENTS ───────────────────────────────────────────────── */
+
+@media (max-width: 380px) {
+  .calc-btn {
+    font-size: 20px;
+    min-height: 64px;
+    padding: 16px;
+  }
+
+  .calc-btn--equals {
+    font-size: 24px;
+  }
+
+  .calc-btn--wide {
+    border-radius: 0;
+  }
+
+  .calc-btn:last-child {
+    border-radius: 0;
+  }
+}

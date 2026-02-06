@@ -1,0 +1,120 @@
+/**
+ * ==========================================================================
+ * DISPLAY.CSS — Calculator Display Styles
+ * ==========================================================================
+ *
+ * The display has two text areas:
+ * 1. Expression line (small, secondary color) — shows "5 +"
+ * 2. Value line (large, primary color) — shows "3" or the result
+ *
+ * KEY CSS CONCEPTS USED:
+ * - Flexbox for vertical alignment
+ * - Dynamic font sizing with classes
+ * - Text overflow handling
+ * - CSS transitions for smooth size changes
+ * ==========================================================================
+ */
+
+.calc-display {
+  /* Layout: stack expression and value vertically, align right */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+
+  /* Sizing */
+  padding: 24px 24px 16px;
+  min-height: 120px;
+
+  /* Background */
+  background-color: var(--color-bg-display);
+
+  /* Smooth theme transition */
+  transition: background-color 0.3s ease;
+
+  /* Prevent display text from overflowing the container */
+  overflow: hidden;
+}
+
+/* ── Expression Line ──────────────────────────────────────────────────────── */
+
+.calc-display__expression {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  min-height: 24px;
+  line-height: 24px;
+  text-align: right;
+  width: 100%;
+
+  /* Thin, lightweight appearance */
+  font-weight: 300;
+
+  /* If expression is too long, truncate with ellipsis */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Smooth color transition */
+  transition: color 0.3s ease;
+}
+
+/* ── Main Value ───────────────────────────────────────────────────────────── */
+
+.calc-display__value {
+  /*
+   * Default (large) font size.
+   * This will be overridden by size modifier classes for long numbers.
+   */
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  text-align: right;
+  width: 100%;
+
+  /* Single line, no wrap */
+  white-space: nowrap;
+  overflow: hidden;
+
+  /*
+   * Smooth transition when the font-size class changes.
+   * Without this, the text would "jump" between sizes.
+   * With it, the text smoothly shrinks/grows.
+   */
+  transition:
+    font-size 0.15s ease,
+    color 0.3s ease;
+
+  /* Use tabular (monospace) numbers so digits don't shift when they change */
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * RESPONSIVE FONT SIZE CLASSES
+ *
+ * These are applied dynamically by the Display component based on
+ * the length of the displayed text. Longer numbers → smaller font.
+ *
+ * This is better than CSS-only solutions because we have precise
+ * control over breakpoints that match our display width.
+ */
+
+.calc-display__value--md {
+  font-size: 40px;
+}
+
+.calc-display__value--sm {
+  font-size: 32px;
+}
+
+.calc-display__value--xs {
+  font-size: 24px;
+}
+
+/* ── Error State ──────────────────────────────────────────────────────────── */
+
+.calc-display__value--error {
+  color: var(--color-text-error);
+  font-size: 20px;
+  font-weight: 400;
+}
