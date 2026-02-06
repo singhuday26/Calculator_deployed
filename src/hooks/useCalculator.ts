@@ -182,42 +182,26 @@ function calculatorReducer(
       const currentValue = parseFloat(state.displayValue);
 
       /**
-       * CASE 1: No first operand yet
-       * Just store the current value and the operator.
-       * Example: User has typed "5" and now presses "+"
-       */
-      if (state.firstOperand === null) {
-        return {
-          ...state,
-          firstOperand: currentValue,
-          operator: nextOperator,
-          expression: `${state.displayValue} ${nextOperator}`,
-          waitingForSecondOperand: true,
-        };
-      }
-
-      /**
-       * CASE 2: Already waiting for second operand
+       * CASE 1: Already waiting for second operand
        * The user pressed two operators in a row (e.g., "5 + ×")
        * Just replace the previous operator.
        */
       if (state.waitingForSecondOperand) {
+        const operand = state.firstOperand ?? currentValue;
         return {
           ...state,
+          firstOperand: operand,
           operator: nextOperator,
-          expression: `${state.firstOperand} ${nextOperator}`,
+          expression: `${operand} ${nextOperator}`,
         };
       }
 
       /**
-       * CASE 3: Both operands are available
-       * The user is CHAINING operations (e.g., "5 + 3 ×")
-       * We need to calculate the intermediate result first.
-       *
-       * Example: "5 + 3 ×" should show "8" and set up for "8 ×"
-       * This is how real calculators work — they evaluate left-to-right.
+       * CASE 2: Chaining operations (e.g., "5 + 3 ×")
+       * Both operands and a previous operator are available.
+       * Calculate the intermediate result, then set up the new operator.
        */
-      if (state.operator) {
+      if (state.firstOperand !== null && state.operator) {
         try {
           const result = calculate(state.firstOperand, state.operator, currentValue);
           const resultStr = formatResult(result);
@@ -242,11 +226,23 @@ function calculatorReducer(
               expression: '',
             };
           }
-          throw error; // Re-throw unexpected errors
+          throw error;
         }
       }
 
-      return state;
+      /**
+       * CASE 3: Starting a new operation
+       * Covers both fresh start (firstOperand is null) AND
+       * post-calculation state (firstOperand set but no operator).
+       * Use the current display value as the first operand.
+       */
+      return {
+        ...state,
+        firstOperand: currentValue,
+        operator: nextOperator,
+        expression: `${state.displayValue} ${nextOperator}`,
+        waitingForSecondOperand: true,
+      };
     }
 
     // ─── EQUALS (=) ───────────────────────────────────────────────────
@@ -275,24 +271,22 @@ function calculatorReducer(
         };
 
         /**
-         * DESIGN DECISION: Reset firstOperand after calculation
-         * 
-         * This matches real calculator behavior:
-         * - After "5 + 3 = 8", typing "2" starts a NEW calculation (displays "2", not "82")
-         * - After "5 + 3 = 8", pressing "+" continues with result ("8 + ...")
-         * 
-         * By resetting firstOperand to null:
-         * - Typing digits → starts fresh (23 + 23 = 46, then "2" → firstOperand: null)
-         * - Pressing operator → uses result (23 + 23 = 46, then "+" → firstOperand: 46)
+         * After calculation:
+         * - firstOperand keeps the result for potential chaining (8 + ...)
+         * - operator is cleared (calculation is done)
+         * - waitingForSecondOperand = true so next digit starts fresh
+         *
+         * This works because INPUT_OPERATOR's CASE 3 (the default)
+         * handles the state where firstOperand is set but operator is null.
          */
         return {
           ...state,
           displayValue: resultStr,
           expression: '',
-          firstOperand: null, // Reset to allow fresh calculations
+          firstOperand: result,
           operator: null,
-          waitingForSecondOperand: true, // Keep true to allow starting new number
-          history: [historyEntry, ...state.history].slice(0, 50), // Keep last 50
+          waitingForSecondOperand: true,
+          history: [historyEntry, ...state.history].slice(0, 50),
         };
       } catch (error) {
         if (error instanceof CalculatorError) {
